@@ -1,0 +1,23 @@
+name: Metrics
+on:
+  schedule: [{cron: "0 0 * * *"}] # 每天零点更新
+  workflow_dispatch:
+push: {branches: ["master", "main"]}
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          token: ${{ secrets.METRICS_TOKEN }}
+          # 核心设置：输出到本地仓库
+          filename: github-metrics.svg
+          base: header, community, repositories, metadata
+          # 这里的配色非常 NERV
+          config_timezone: Asia/Shanghai
+          theme: terminal
+          plugin_languages: yes
+          plugin_languages_ignored: html, css
+          plugin_activity: yes
+          plugin_activity_limit: 5
+          plugin_activity_days: 14
